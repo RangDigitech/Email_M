@@ -1,10 +1,10 @@
-version: '3'
+version: '3.8'
 
 services:
   backend:
-    build: ./backend
-    ports:
-      - "8000:8000"  # Map the container's port to host
+    build:
+      context: ./backend # Specifies the directory for the backend Dockerfile
+    restart: always
     environment:
       - DB_HOST=mysql
       - DB_USER=root
@@ -16,9 +16,11 @@ services:
       - app_network
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend # Specifies the directory for the frontend Dockerfile
+    restart: always
     ports:
-      - "80:80"  # Expose frontend on port 80
+      - "80:80"  # Expose frontend on port 80 (HTTP)
     depends_on:
       - backend
     networks:
@@ -26,14 +28,22 @@ services:
 
   mysql:
     image: mysql:5.7
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: email_management
-    ports:
-      - "3306:3306"
+    # Add a volume to persist database data
+    volumes:
+      - mysql_data:/var/lib/mysql
+    # This command helps with auth issues between mysql 5.7 and some connectors
+    command: '--default-authentication-plugin=mysql_native_password'
     networks:
       - app_network
 
+# Define the network and volume
 networks:
   app_network:
     driver: bridge
+
+volumes:
+  mysql_data:

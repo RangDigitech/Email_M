@@ -21,7 +21,7 @@ export default function CampaignModal({ isOpen, onClose, onCampaignCreate, editC
     const [receiverLists, setReceiverLists] = useState([]);
     const [selectedSenderList, setSelectedSenderList] = useState('');
     const [selectedReceiverList, setSelectedReceiverList] = useState('');
-    const API_BASE = 'http://127.0.0.1:5000';
+    const API_BASE = '';
 
     // Reset when modal opens so each new create starts fresh
     useEffect(() => {

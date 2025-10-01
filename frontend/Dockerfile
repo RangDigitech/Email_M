@@ -1,35 +1,30 @@
-# Stage 1: Build the React application using Node.js
-# Using '-alpine' creates a smaller, more secure image.
-# UPDATED: Changed from node:18-alpine to node:20-alpine to meet Vite's requirements.
-FROM node:20-alpine AS build
+# Dockerfile.frontend
 
-# Set the working directory inside the container
+# Stage 1: Build the React application
+FROM node:18 AS build
+
 WORKDIR /app
 
-# Copy the package.json and the all-important package-lock.json
-# This step is cached by Docker, speeding up future builds.
-COPY package.json package-lock.json ./
+# Copy package.json and package-lock.json
+COPY package*.json ./
 
-# Install project dependencies using npm
+# Install dependencies
 RUN npm install
 
-# Copy the rest of your application's source code
+# Copy the rest of the frontend source code
 COPY . .
 
-# Build the application for production using the build script from package.json
-# Vite will place the output in the /app/dist folder.
+# Build the application for production
 RUN npm run build
 
-# Stage 2: Serve the application using a lightweight Nginx web server
+# Stage 2: Serve the built application with Nginx
 FROM nginx:stable-alpine
 
-# Copy the production-ready static files from the 'build' stage's /app/dist folder
-# into the folder Nginx serves from.
-COPY --from=build /app/dist /usr/share/nginx/html
+# Copy the build output from the 'build' stage
+COPY --from=build /app/build /usr/share/nginx/html
 
-# Tell Docker that the container will listen on port 80
+# Copy our custom Nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose port 80
 EXPOSE 80
-
-# The default command to start the Nginx server when the container starts.
-CMD ["nginx", "-g", "daemon off;"]
-
