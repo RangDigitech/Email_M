@@ -18,7 +18,7 @@ export default function App() {
         const endpoint = isLoginView ? '/api/login' : '/api/signup';
         try {
             setMessage({ text: 'Processing...', type: 'info' });
-            const response = await fetch(url, {
+            const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),
