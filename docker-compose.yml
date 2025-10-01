@@ -8,7 +8,7 @@ services:
     environment:
       - DB_HOST=mysql
       - DB_USER=root
-      - DB_PASSWORD=rootpassword
+      - DB_PASSWORD=Rangtech@01
       - DB_NAME=email_management
     depends_on:
       - mysql
@@ -30,7 +30,7 @@ services:
     image: mysql:5.7
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_ROOT_PASSWORD: Rangtech@01
       MYSQL_DATABASE: email_management
     # Add a volume to persist database data
     volumes:
