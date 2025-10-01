@@ -16,7 +16,6 @@ export default function App() {
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
         const endpoint = isLoginView ? '/api/login' : '/api/signup';
-        const url = 'http://72.60.102.225:5000';  
         try {
             setMessage({ text: 'Processing...', type: 'info' });
             const response = await fetch(url, {
