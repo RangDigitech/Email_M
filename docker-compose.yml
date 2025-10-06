@@ -1,9 +1,34 @@
+# docker-compose.yml (Final Version with Traefik)
 version: '3.8'
 
 services:
+  traefik:
+    image: traefik:v2.9
+    container_name: traefik
+    restart: always
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.letsencrypt.acme.email=jeet.patel1031r2005@gmail.com" # 👈 Change this
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080" # For Traefik Dashboard (optional)
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./acme.json:/letsencrypt/acme.json"
+    networks:
+      - app_network
+
   backend:
     build:
-      context: ./backend # Specifies the directory for the backend Dockerfile
+      context: ./backend
     restart: always
     environment:
       - DB_HOST=mysql
@@ -17,10 +42,18 @@ services:
 
   frontend:
     build:
-      context: ./frontend # Specifies the directory for the frontend Dockerfile
+      context: ./frontend
     restart: always
-    ports:
-      - "80:80"  # Expose frontend on port 80 (HTTP)
+    # ❌ Port is no longer needed here. Traefik handles it.
+    labels: # 👈 ADD THIS SECTION
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`eapp.mictominds.com`)" # 👈 Change this
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.middlewares.redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.web.entrypoints=web"
+      - "traefik.http.routers.web.rule=Host(`eapp.mictominds.com`)" # 👈 Change this
+      - "traefik.http.routers.web.middlewares=redirect"
     depends_on:
       - backend
     networks:
@@ -34,13 +67,10 @@ services:
       MYSQL_DATABASE: email_management
     volumes:
       - mysql_data:/var/lib/mysql
-    ports: # 👈 ADD THIS SECTION
-      - "3307:3306"
     command: '--default-authentication-plugin=mysql_native_password'
     networks:
       - app_network
 
-# Define the network and volume
 networks:
   app_network:
     driver: bridge
