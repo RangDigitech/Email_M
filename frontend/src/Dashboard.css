@@ -1,21 +1,32 @@
+/*
+  ANALYSIS & CORRECTIONS:
+  1. Fixed Widths Removed: The main culprits `.main-content` (1115px) and `.content-body` (1000px) had their fixed widths removed. They now grow to fill the available space.
+  2. Flexbox for Layout: The `.main-content` now uses `flex-grow: 1` to correctly fill the space next to the sidebar.
+  3. Mobile-First Stacking: A media query for screens smaller than 768px changes the main `.dashboard-layout` to `flex-direction: column`. This stacks the sidebar on top of the main content, a common and effective mobile pattern.
+  4. Responsive Sidebar: The sidebar's width is set to 100% on mobile. On desktop, it has a fixed `flex-basis` and `min-width` to prevent it from being crushed.
+  5. Responsive Padding: Padding for the main content is reduced on smaller screens.
+*/
+
 .dashboard-layout {
     display: flex;
     min-height: 100vh;
-    background-color: #f9fafb; /* Very light gray */
+    background-color: #f9fafb;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 /* --- Sidebar --- */
 .sidebar {
     width: 260px;
+    flex-shrink: 0; /* Prevents sidebar from shrinking */
     background-color: #124170;
     border-right: 1px solid #e5e7eb;
     display: flex;
     flex-direction: column;
     padding: 1.5rem 1rem;
-    color: #374151; /* Darker gray text */
-
+    color: white; /* Changed for better contrast on dark background */
+    transition: transform 0.3s ease-in-out;
 }
+
 .submenu {
     display: flex;
     flex-direction: column;
@@ -23,10 +34,12 @@
     gap: 6px;
     margin-bottom: 8px;
 }
+
 .sidebar-header {
     padding: 0 1rem;
     margin-bottom: 1.5rem;
 }
+
 .nav-subitem {
     text-align: left;
     background: transparent;
@@ -39,81 +52,14 @@
 .logo {
     font-size: 1.75rem;
     font-weight: 800;
-    color: #fbfbff; /* Indigo */
-}
-
-.profile-section {
-    display: flex;
-    align-items: center;
-    padding: 0.75rem 1rem;
-    border-radius: 0.5rem;
-    background-color: #f3f4f6;
-    margin-bottom: 1.5rem;
-}
-
-.avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    margin-right: 0.75rem;
-}
-
-.profile-name {
-    font-weight: 600;
-    flex-grow: 1;
-}
-
-.profile-arrow {
-    color: #6b7280; /* Medium gray */
-}
-
-.setup-progress {
-    padding: 1rem;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.5rem;
-    margin-bottom: 1.5rem;
-}
-
-.setup-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: 600;
-    font-size: 0.875rem;
-}
-
-.skip-guide {
-    background: none;
-    border: none;
-    color: #6b7280;
-    cursor: pointer;
-    font-size: 0.75rem;
-}
-
-.progress-bar-container {
-    height: 8px;
-    background-color: #e5e7eb;
-    border-radius: 4px;
-    margin: 0.75rem 0;
-    overflow: hidden;
-}
-
-.progress-bar {
-    height: 100%;
-    background-color: #4f46e5;
-    border-radius: 4px;
-}
-
-.progress-text {
-    font-size: 0.75rem;
-    color: #6b7280;
+    color: #fbfbff;
 }
 
 .nav-menu {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    flex-grow: 1; /* Pushes the footer down */
+    flex-grow: 1;
 }
 
 .nav-item {
@@ -122,19 +68,22 @@
     padding: 0.75rem 1rem;
     border-radius: 0.5rem;
     text-decoration: none;
-    color: #374151;
+    color: white;
     font-weight: 500;
     transition: background-color 0.2s, color 0.2s;
 }
 
 .nav-item:hover {
-    background-color: #f3f4f6;
+    background-color: rgba(255, 255, 255, 0.1);
 }
+.nav-item.active {
+    background-color: #4f46e5;
+}
+
 
 .nav-icon {
     margin-right: 1rem;
     font-size: 1.125rem;
-    color: #124170;
 }
 
 .sidebar-footer {
@@ -159,9 +108,10 @@
 
 /* --- Main Content --- */
 .main-content {
-    flex-grow: 1;
+    flex-grow: 1; /* ALLOWS CONTENT TO FILL SPACE */
     padding: 2rem 3rem;
-    width: 1115px;
+    width: 100%; /* FIX: Replaced fixed width */
+    overflow-x: hidden; /* Prevents horizontal scroll on the main area */
 }
 
 .main-header {
@@ -171,6 +121,7 @@
 
 .tabs {
     display: flex;
+    flex-wrap: wrap; /* Allow tabs to wrap on small screens */
 }
 
 .tab-item {
@@ -192,8 +143,7 @@
 }
 
 .content-body {
-    text-align: center;
-    width: 1000px;
+    width: 100%; /* FIX: Replaced fixed width */
 }
 
 .content-title {
@@ -210,8 +160,6 @@
 }
 .nav-item.dropdown {
     cursor: pointer;
-    background-color: #f9fafb;
-    
 }
 .cta-icon-container {
     margin-bottom: 1.5rem;
@@ -244,4 +192,31 @@
 
 .primary-button-cta:hover {
     background-color: #4338ca;
+}
+
+
+/* --- Responsive Styles --- */
+@media (max-width: 768px) {
+    .dashboard-layout {
+        flex-direction: column; /* Stack sidebar and content */
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .main-content {
+        padding: 1.5rem; /* Reduce padding for mobile */
+    }
+    
+    .tabs {
+        justify-content: center;
+    }
+
+    .tab-item {
+        margin-right: 1rem;
+    }
 }

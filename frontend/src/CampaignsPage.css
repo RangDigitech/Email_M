@@ -1,117 +1,145 @@
-/* CampaignsPage.css */
+/*
+  ANALYSIS & CORRECTIONS:
+  1. Responsive Grid: The `.campaigns-grid` was already using `repeat(auto-fit, minmax(260px, 1fr))`, which is a perfect pattern for a responsive grid. No changes were needed there.
+  2. Header Wrapping: The top section `.campaigns-top` now has `flex-wrap: wrap` to allow the title and buttons to stack vertically on narrow screens instead of causing an overflow.
+  3. Responsive Padding: Added a media query to reduce the page padding on smaller screens.
+*/
 .campaigns-page {
-    padding: 16px;
+  padding: 24px;
+}
+
+.campaigns-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap; /* ADDED: Allows items to wrap on small screens */
+  gap: 1rem; /* ADDED: Adds space when items wrap */
+}
+
+.btn-edit {
+  background-color: #78c4f0;
+  color: #000;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.campaigns-top h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.campaigns-count {
+  color: #666;
+  font-size: 1rem;
+}
+
+.empty-state {
+  background: #fff;
+  border-radius: 8px;
+  padding: 28px;
+  text-align: center;
+  color: #555;
+  border: 1px solid #e5e7eb;
+}
+
+.campaigns-grid {
+  display: grid;
+  /* This is already a great responsive grid! */
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.campaign-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column; /* Stack content vertically */
+  gap: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.card-left {
+  flex-grow: 1; /* Allow this section to grow */
+}
+
+.campaign-name {
+  margin: 0 0 6px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.campaign-topic {
+  margin: 0 0 12px 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.campaign-meta {
+  display: flex;
+  flex-wrap: wrap; /* Allow meta items to wrap */
+  gap: 12px;
+  color: #777;
+  font-size: 0.85rem;
+}
+
+.meta-item {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: auto; /* Pushes actions to the bottom */
+  padding-top: 12px;
+  border-top: 1px solid #f3f4f6;
+}
+
+.btn-view,
+.btn-delete {
+  flex: 1; /* Make buttons share space equally */
+  justify-content: center;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  transition: background-color 0.2s;
+}
+
+.btn-view {
+  background: #eef6ff;
+  color: #0b66ff;
+}
+
+.btn-view:hover {
+  background-color: #dbeafe;
+}
+
+.btn-delete {
+  background: #fff6f6;
+  color: #d33;
+}
+
+.btn-delete:hover {
+  background-color: #fee2e2;
+}
+
+/* --- Responsive Styles --- */
+@media (max-width: 768px) {
+  .campaigns-page {
+      padding: 16px;
   }
-  
-  .campaigns-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-  }
-  .btn-edit {
-    background-color: #78c4f0; /* yellow */
-    color: #000;
-    padding: 6px 10px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  
-  
-  
-  .campaigns-top h3 {
-    margin: 0;
-    font-size: 1.25rem;
-  }
-  
-  .campaigns-count {
-    color: #666;
-    font-size: 0.95rem;
-  }
-  
-  .empty-state {
-    background: #fff;
-    border-radius: 8px;
-    padding: 28px;
-    text-align: center;
-    color: #555;
-  }
-  
-  .campaigns-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 12px;
-  }
-  
-  .campaign-card {
-    background: #fff;
-    border-radius: 8px;
-    padding: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-  }
-  
-  .card-left {
-    flex: 1;
-  }
-  
-  .campaign-name {
-    margin: 0 0 6px 0;
-    font-size: 1rem;
-  }
-  
-  .campaign-topic {
-    margin: 0 0 8px 0;
-    color: #666;
-    font-size: 0.9rem;
-  }
-  
-  .campaign-meta {
-    display: flex;
-    gap: 10px;
-    color: #777;
-    font-size: 0.85rem;
-  }
-  
-  .meta-item {
-    display: inline-flex;
-    gap: 6px;
-    align-items: center;
-  }
-  
-  .card-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  
-  .btn-view,
-  .btn-delete {
-    border: none;
-    padding: 8px 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    display: inline-flex;
-    gap: 8px;
-    align-items: center;
-  }
-  
-  .btn-view {
-    background: #eef6ff;
-    color: #0b66ff;
-  }
-  
-  .btn-delete {
-    background: #fff6f6;
-    color: #d33;
-    border: 1px solid rgba(211, 50, 50, 0.12);
-  }
-  
+}

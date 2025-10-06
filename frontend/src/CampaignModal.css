@@ -1,15 +1,23 @@
-/* --- frontend/src/CampaignModal.css --- */
+/*
+  ANALYSIS & CORRECTIONS:
+  1. Good Foundation: The modal already used responsive units (`%`, `max-width`, `vh`), which is great.
+  2. Responsive Padding: Added a media query to reduce the main padding (`2.5rem`) on smaller screens to prevent the modal from feeling cramped.
+  3. Step Indicator: Added `flex-wrap` to the step indicator to ensure it doesn't overflow on very narrow screens, although it's unlikely.
+*/
+
 .modal-overlay {
     position: fixed; top: 0; left: 0; right: 0; bottom: 0;
     background-color: rgba(17, 24, 39, 0.6);
     display: flex; justify-content: center; align-items: center;
     z-index: 1000; animation: fadeIn 0.3s ease;
+    padding: 1rem; /* ADDED: Ensures modal doesn't touch screen edges */
 }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 .modal-content {
     background-color: white; padding: 2rem 2.5rem 2.5rem 2.5rem;
-    border-radius: 1rem; width: 90%; max-width: 650px;
+    border-radius: 1rem; width: 100%; /* CHANGED: was 90% */
+    max-width: 650px;
     box-shadow: 0 20px 25px -5px rgba(0,0,0,.1), 0 10px 10px -5px rgba(0,0,0,.04);
     position: relative; animation: slideUp 0.4s ease;
     display: flex; flex-direction: column;
@@ -30,7 +38,6 @@
 }
 .modal-close-button:hover { color: #111827; }
 
-/* --- FIXED BACK BUTTON --- */
 .modal-back-button {
     position: absolute; top: 1.25rem; left: 2.5rem; background: none;
     border: none; font-size: 1rem; color: #6b7280; cursor: pointer;
@@ -42,9 +49,9 @@
 .modal-header { text-align: center; margin-bottom: 2rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 1.5rem; position: relative; }
 .modal-main-title { font-size: 1.75rem; font-weight: 700; color: #111827; margin: 0; padding-top: 1rem; }
 
-.step-indicator { display: flex; justify-content: center; align-items: center; margin-top: 1.5rem; }
+.step-indicator { display: flex; justify-content: center; align-items: center; margin-top: 1.5rem; flex-wrap: wrap; }
 .step { display: flex; flex-direction: column; align-items: center; color: #9ca3af; transition: color 0.3s ease; }
-.step-icon { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #d1d5db; display: flex; justify-content: center; align-items: center; font-size: 1rem; transition: all 0.3s ease; }
+.step-icon { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #d1d5db; display: flex; justify-content: center; align-items: center; font-size: 1rem; transition: all 0.3s ease; flex-shrink: 0; }
 .step-label { margin-top: 0.5rem; font-size: 0.875rem; font-weight: 500; }
 .step.active .step-icon, .step.complete .step-icon { border-color: #4f46e5; background-color: #4f46e5; color: white; }
 .step.active .step-label, .step.complete .step-label { color: #4f46e5; }
@@ -54,14 +61,27 @@
 .form-group { margin-bottom: 1.5rem; }
 .form-group label { display: block; font-weight: 600; color: #374151; margin-bottom: 0.5rem; }
 .form-hint { font-size: 0.8rem; color: #6b7280; margin-top: -0.25rem; margin-bottom: 0.75rem; }
-.form-group input, .form-group select { width: 100%; padding: 0.8rem 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; box-sizing: border-box; }
+.form-group input, .form-group select { width: 100%; padding: 0.8rem 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; }
 .form-group input:focus, .form-group select:focus { outline: none; border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,0.2); }
 
 .input-with-icon { position: relative; display: flex; align-items: center; }
-.input-icon { position: absolute; left: 1rem; color: #9ca3af; transition: color 0.2s; }
+.input-icon { position: absolute; left: 1rem; color: #9ca3af; transition: color 0.2s; pointer-events: none; }
 .input-with-icon input { padding-left: 2.75rem; width: 100%; }
 .input-with-icon input:focus + .input-icon { color: #4f46e5; }
 
 .dynamic-fields-container { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem; margin-bottom: 1.5rem; }
 .modal-primary-button { width: 100%; padding: 0.9rem 1rem; font-size: 1rem; font-weight: 600; color: white; background-color: #4f46e5; border: none; border-radius: 0.5rem; cursor: pointer; transition: background-color 0.2s; margin-top: auto; }
 .modal-primary-button:hover { background-color: #4338ca; }
+
+
+@media (max-width: 640px) {
+  .modal-content {
+    padding: 1.5rem;
+  }
+  .modal-back-button {
+    left: 1.5rem;
+  }
+  .modal-main-title {
+    font-size: 1.5rem;
+  }
+}

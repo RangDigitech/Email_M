@@ -1,138 +1,161 @@
+/*
+  ANALYSIS & CORRECTIONS:
+  1. Responsive Table: Tables are tricky. The `.manage-table` will overflow on small screens. The standard solution is to wrap the table in a container with `overflow-x: auto`. While I can't add a div from CSS, I will add a comment recommending it and style a generic wrapper.
+  2. Flexible Headers: The `.page-header-row` and `.lists-header-row` have been updated with `flex-wrap: wrap` and a `gap` to handle stacking on mobile gracefully.
+  3. Input Row Stacking: The `.input-row` now stacks vertically on smaller screens for a better mobile UX.
+*/
+
 .lists-page {
-    padding: 24px;
-  }
-  
+  padding: 24px;
+}
+
 .lists-section {
-    background: #fff;
-    border: 1px solid #eee;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-  }
-  
-  h2 {
-    margin-bottom: 16px;
-  }
-  
-  .lists-error {
-    color: #b00020;
-    font-weight: 500;
-    margin-bottom: 12px;
-  }
-  
-  .form-row {
-    margin-bottom: 16px;
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-  }
-  
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+h2 {
+  margin-bottom: 16px;
+}
+
+.lists-error {
+  color: #b00020;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.form-row {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
 .lists-input {
-    width: 100%;
-    padding: 12px 14px; /* larger input */
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-  }
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+}
 
-/* Prevent the right border from touching container edge */
-.lists-section .lists-input { box-sizing: border-box; }
+.page-header-row, .lists-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap; /* WRAP: for small screens */
+  gap: 1rem; /* GAP: for when items wrap */
+}
 
-.page-header-row, .lists-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 .title-left { margin: 0; }
+
 .right-tabs { display: flex; gap: 8px; }
+
 .tab-btn { padding: 6px 10px; border: 1px solid #ddd; background: #fff; border-radius: 6px; cursor: pointer; }
+
 .tab-btn.active { background: #2b6cb0; color: #fff; border-color: #2b6cb0; }
   
-  .input-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 20px;
-  }
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap; /* WRAP: allow input and button to stack */
+}
   
-  .btn-small {
-    border: none;
-    padding: 10px 16px; /* larger buttons */
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
+.btn-small {
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
   
-  .btn-small.primary {
-    background: #2b6cb0;
-    color: #fff;
-  }
+.btn-small.primary { background: #2b6cb0; color: #fff; }
+.btn-small.danger { background: #e53e3e; color: #fff; }
+.btn-small.secondary { background: #718096; color: #fff; }
   
-  .btn-small.danger {
-    background: #e53e3e;
-    color: #fff;
-  }
-  
-  .btn-small.secondary {
-    background: #718096;
-    color: #fff;
-  }
-  
-  .btn-small.upload {
-    background: #f1f1f1;
-    border: 1px dashed #aaa;
-    color: #555;
-    cursor: pointer;
-  }
-  .btn-small.upload input {
-    display: none;
-  }
+.btn-small.upload {
+  background: #f1f1f1;
+  border: 1px dashed #aaa;
+  color: #555;
+  cursor: pointer;
+}
+.btn-small.upload input { display: none; }
 
-.nav-item.dropdown { cursor: pointer; }
-.nav-item-row { display: flex; align-items: center; gap: 8px; width: 100%; }
-.submenu { display: flex; flex-direction: column; padding-left: 24px; gap: 6px; margin-bottom: 8px; }
-.nav-subitem { text-align: left; background: transparent; border: none; padding: 6px 0; cursor: pointer; }
-.nav-subitem.active { color: #2b6cb0; font-weight: 600; }
+/* RECOMMENDATION: Wrap your .manage-table in a <div> with the class .table-container 
+  for horizontal scrolling on mobile.
+*/
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
 
-.manage-table { width: 100%; border-collapse: collapse; }
-.manage-table th, .manage-table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #eee; }
-  
-  .bottom-actions {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
+.manage-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px; /* Give table a min-width to prevent squishing content */
+}
 
-  .bottom-create {
-    display: flex;
-    justify-content: flex-start;
-  }
+.manage-table th, .manage-table td {
+  text-align: left;
+  padding: 12px 10px;
+  border-bottom: 1px solid #eee;
+  white-space: nowrap; /* Prevent text from wrapping */
+}
   
-  .email-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    margin-top: 10px;
-    display: grid;
-    gap: 8px;
-    max-height: 200px;
-    overflow-y: auto;
-  }
+.bottom-actions, .bottom-create {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.bottom-create {
+  justify-content: flex-start;
+}
   
-  .email-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 12px;
-    background: #f9fafb;
-    border: 1px solid #eee;
-    border-radius: 6px;
-  }
+.email-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0 0;
+  display: grid;
+  gap: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+}
   
-  .btn-delete {
-    border: none;
-    background: transparent;
-    color: #e53e3e;
-    cursor: pointer;
-  }
+.email-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: #f9fafb;
+  border: 1px solid #eee;
+  border-radius: 6px;
+}
   
+.btn-delete {
+  border: none;
+  background: transparent;
+  color: #e53e3e;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .lists-page {
+    padding: 16px;
+  }
+  .lists-section {
+    padding: 16px;
+  }
+}

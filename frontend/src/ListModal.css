@@ -1,10 +1,84 @@
-/* ListModal.css */
-.listmodal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-.listmodal-content { background: #fff; width: 640px; max-width: calc(100% - 32px); border-radius: 10px; border: 1px solid #eaeaea; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
-.listmodal-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid #eee; }
-.listmodal-close { background: transparent; border: none; font-size: 22px; cursor: pointer; }
-.listmodal-body { padding: 12px 16px; }
-.listmodal-footer { padding: 12px 16px; border-top: 1px solid #eee; display: flex; justify-content: flex-end; }
-.form-group { margin-bottom: 10px; }
-.form-group label { display: block; font-size: 12px; color: #666; margin-bottom: 4px; }
-.form-group input { width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; }
+/*
+  ANALYSIS & CORRECTIONS:
+  1. Good Foundation: Using `max-width: calc(100% - 32px)` is a solid technique.
+  2. Simplification: I simplified the width to `width: 100%` and a standard `max-width` and handled the outer spacing with padding on the overlay.
+  3. Responsive Padding: Added a media query to reduce internal padding for smaller screens.
+*/
+.listmodal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem; /* ADDED: outer spacing */
+  }
+  
+  .listmodal-content {
+    background: #fff;
+    width: 100%;
+    max-width: 640px; /* Replaces the fixed width and calc() */
+    border-radius: 10px;
+    border: 1px solid #eaeaea;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    overflow: hidden;
+    display: flex; /* ADDED: flex column for footer */
+    flex-direction: column;
+    max-height: 90vh;
+  }
+  
+  .listmodal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+    flex-shrink: 0;
+  }
+  
+  .listmodal-close {
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+  }
+  
+  .listmodal-body {
+    padding: 16px;
+    overflow-y: auto; /* Allow body to scroll if content is long */
+  }
+  
+  .listmodal-footer {
+    padding: 12px 16px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+    flex-shrink: 0;
+  }
+  
+  .form-group {
+    margin-bottom: 10px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 4px;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+  }
+  
+  @media (max-width: 640px) {
+    .listmodal-header, .listmodal-body, .listmodal-footer {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+  }
+  
